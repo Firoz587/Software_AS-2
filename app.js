@@ -2,6 +2,7 @@ const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 const resultsContainer = document.getElementById("results-container");
 const cartList = document.getElementById("cart-list");
+const totalPriceElement = document.getElementById("total-price");
 
 const API_BASE_URL = "https://www.themealdb.com/api/json/v1/1/";
 
@@ -46,7 +47,8 @@ function addToCart(id, name, image) {
         return;
     }
 
-    const cartItem = { id, name, image };
+    const price = (Math.random() * 20 + 5).toFixed(2); 
+    const cartItem = { id, name, image, price: parseFloat(price) };
     cart.push(cartItem);
     updateCart();
 }
@@ -56,10 +58,16 @@ function removeFromCart(id) {
     updateCart();
 }
 
+function calculateTotalPrice() {
+    return cart.reduce((total, item) => total + item.price, 0).toFixed(2);
+}
+
+// Function to update the cart display
 function updateCart() {
     cartList.innerHTML = "";
     if (cart.length === 0) {
         cartList.innerHTML = "<p>Your cart is empty.</p>";
+        totalPriceElement.textContent = "0.00";
         return;
     }
 
@@ -68,13 +76,15 @@ function updateCart() {
         cartItem.innerHTML = `
             <span>
                 <img src="${item.image}" alt="${item.name}" style="width: 40px; height: 40px; border-radius: 5px; margin-right: 10px;">
-                ${item.name}
+                ${item.name} - $${item.price.toFixed(2)}
             </span>
             <button onclick="removeFromCart('${item.id}')">Remove</button>
         `;
 
         cartList.appendChild(cartItem);
     });
+
+    totalPriceElement.textContent = calculateTotalPrice();
 }
 
 searchButton.addEventListener("click", () => {
