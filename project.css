@@ -1,0 +1,123 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #343a40;
+    color: white;
+}
+
+header input {
+    width: 300px;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+header button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+header button:hover {
+    background-color: #0056b3;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+#results-container, #cart-container {
+    width: 45%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#results-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    width: 200px;
+    margin: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 10px;
+    text-align: center;
+}
+
+.card-body h3 {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.card-body button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.card-body button:hover {
+    background-color: #218838;
+}
+
+#cart-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#cart-container li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+}
+
+#cart-container li button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#cart-container li button:hover {
+    background-color: #c82333;
+}
