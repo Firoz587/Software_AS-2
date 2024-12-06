@@ -1,101 +1,55 @@
-const searchInput = document.getElementById("search-input");
-const searchButton = document.getElementById("search-button");
-const resultsContainer = document.getElementById("results-container");
-const cartList = document.getElementById("cart-list");
-const totalPriceElement = document.getElementById("total-price");
+const API_URL = "https://www.themealdb.com/api/json/v1/1/search.php?s=A";
+const productsContainer = document.getElementById('products-container');
+const searchInput = document.getElementById('search-input');
+const searchBtn = document.getElementById('search-btn');
+let totalPrice = 0;
 
-const API_BASE_URL = "https://www.themealdb.com/api/json/v1/1/";
-
-let cart = [];
-
-async function fetchMeals(query) {
+// Fetch products from the MealBD API based on the search term
+async function fetchProducts(query = "") {
     try {
-        const response = await fetch(`${API_BASE_URL}search.php?s=${query}`);
+        const response = await fetch(`${API_URL}${query}`);
         const data = await response.json();
-        displayResults(data.meals);
+
+        if (data.meals) {
+            displayProducts(data.meals);
+        } else {
+            productsContainer.innerHTML = '<p>No products found. Try a different search.</p>';
+        }
     } catch (error) {
-        console.error("Error fetching data:", error);
-        resultsContainer.innerHTML = "<p>Something went wrong. Please try again later.</p>";
+        console.error("Error fetching products:", error);
+        productsContainer.innerHTML = '<p>Error loading products. Please try again later.</p>';
     }
 }
 
-function displayResults(meals) {
-    resultsContainer.innerHTML = "";
-    if (!meals) {
-        resultsContainer.innerHTML = "<p>No meals found. Try a different search!</p>";
-        return;
-    }
+// Display products on the homepage
+function displayProducts(products) {
+    productsContainer.innerHTML = ""; // Clear previous products
+    products.forEach(product => {
+        const price = (Math.random() * 10 + 5).toFixed(2); // Random price since API doesn't provide it
+        const productElement = document.createElement('div');
+        productElement.classList.add('product');
 
-    meals.forEach((meal) => {
-        const mealCard = document.createElement("div");
-        mealCard.classList.add("card");
-        mealCard.innerHTML = `
-            <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
-            <div class="card-body">
-                <h3>${meal.strMeal}</h3>
-                <button onclick="addToCart('${meal.idMeal}', '${meal.strMeal}', '${meal.strMealThumb}')">Add to Cart</button>
-            </div>
+        productElement.innerHTML = `
+            <h2>${product.strMeal}</h2>
+            <p>${product.strMealThumb ? `<img src="${product.strMealThumb}" alt="${product.strMeal}" style="width:100%;">` : ''}</p>
+            <p>Price: $<span>${price}</span></p>
+            <button onclick="addToCart(${price})">Add to Cart</button>
         `;
-
-        resultsContainer.appendChild(mealCard);
+        productsContainer.appendChild(productElement);
     });
 }
 
-function addToCart(id, name, image) {
-    if (cart.find((item) => item.id === id)) {
-        alert("This meal is already in your cart!");
-        return;
-    }
-
-    const price = (Math.random() * 20 + 5).toFixed(2); 
-    const cartItem = { id, name, image, price: parseFloat(price) };
-    cart.push(cartItem);
-    updateCart();
+// Add a product to the cart and update the total price
+function addToCart(price) {
+    totalPrice += parseFloat(price);
+    document.getElementById('total-price').textContent = totalPrice.toFixed(2);
 }
 
-function removeFromCart(id) {
-    cart = cart.filter((item) => item.id !== id);
-    updateCart();
-}
-
-function calculateTotalPrice() {
-    return cart.reduce((total, item) => total + item.price, 0).toFixed(2);
-}
-
-// Function to update the cart display
-function updateCart() {
-    cartList.innerHTML = "";
-    if (cart.length === 0) {
-        cartList.innerHTML = "<p>Your cart is empty.</p>";
-        totalPriceElement.textContent = "0.00";
-        return;
-    }
-
-    cart.forEach((item) => {
-        const cartItem = document.createElement("li");
-        cartItem.innerHTML = `
-            <span>
-                <img src="${item.image}" alt="${item.name}" style="width: 40px; height: 40px; border-radius: 5px; margin-right: 10px;">
-                ${item.name} - $${item.price.toFixed(2)}
-            </span>
-            <button onclick="removeFromCart('${item.id}')">Remove</button>
-        `;
-
-        cartList.appendChild(cartItem);
-    });
-
-    totalPriceElement.textContent = calculateTotalPrice();
-}
-
-searchButton.addEventListener("click", () => {
+// Event listener for search button
+searchBtn.addEventListener('click', () => {
     const query = searchInput.value.trim();
-    if (query) {
-        fetchMeals(query);
-    }
+    fetchProducts(query);
 });
 
-searchInput.addEventListener("keypress", (event) => {
-    if (event.key === "Enter") {
-        searchButton.click();
-    }
-});
+// Load initial products when the page loads
+window.onload = () => fetchProducts();

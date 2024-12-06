@@ -3,28 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MealDB Food Cart with Pricing</title>
+    <title>MealBD - Products</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Meal Search & Food Cart</h1>
-        <input type="text" id="search-input" placeholder="Search for a meal...">
-        <button id="search-button">Search</button>
+        <h1>MealBD</h1>
+        <div id="search-bar">
+            <input type="text" id="search-input" placeholder="Search for meals..." />
+            <button id="search-btn">Search</button>
+        </div>
+        <div id="cart">
+            <span>Cart Total: $<span id="total-price">0.00</span></span>
+        </div>
     </header>
-    <main>
-        <section id="results-container">
-            <!-- Search results will appear here -->
-        </section>
-        <section id="cart-container">
-            <h2>Food Cart</h2>
-            <ul id="cart-list">
-                <!-- Cart items will appear here -->
-            </ul>
-            <div id="cart-total">
-                <strong>Total Price : </strong><span id="total-price">0.00</span>
-            </div>
-        </section>
+    <main id="products-container">
+        <!-- Products will be dynamically loaded here -->
     </main>
     <script src="app.js"></script>
 </body>
